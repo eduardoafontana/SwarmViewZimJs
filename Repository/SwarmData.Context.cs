@@ -16,8 +16,9 @@ namespace Repository
     public partial class Entities : DbContext
     {
         public Entities()
-            : base("name=Entities")
+            : base(Environment.GetEnvironmentVariable("SQLAZURECONNSTR_defaultConnection"))
         {
+
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

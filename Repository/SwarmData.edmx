@@ -1,0 +1,607 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="SwarmDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Breakpoints">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="BreakpointKind" Type="nvarchar(max)" />
+          <Property Name="Namespace" Type="nvarchar(max)" />
+          <Property Name="Type" Type="nvarchar(max)" />
+          <Property Name="LineNumber" Type="int" />
+          <Property Name="LineOfCode" Type="nvarchar(max)" />
+          <Property Name="Origin" Type="nvarchar(max)" />
+          <Property Name="Created" Type="datetime" Nullable="false" />
+          <Property Name="Session_Id" Type="uniqueidentifier" />
+          <Property Name="CodeFilePath" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="CodeFiles">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Path" Type="nvarchar(max)" />
+          <Property Name="Content" Type="nvarchar(max)" />
+          <Property Name="Created" Type="datetime" Nullable="false" />
+          <Property Name="Session_Id" Type="uniqueidentifier" />
+        </EntityType>
+        <EntityType Name="CodeMetrics">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Hash" Type="nvarchar(max)" />
+          <Property Name="MaintainabilityIndex" Type="nvarchar(max)" />
+          <Property Name="CyclomaticComplexity" Type="nvarchar(max)" />
+          <Property Name="ClassCoupling" Type="nvarchar(max)" />
+          <Property Name="LineOfCode" Type="nvarchar(max)" />
+          <Property Name="PathNode_Id" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Events">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="EventKind" Type="nvarchar(max)" />
+          <Property Name="Detail" Type="nvarchar(max)" />
+          <Property Name="Namespace" Type="nvarchar(max)" />
+          <Property Name="Type" Type="nvarchar(max)" />
+          <Property Name="TypeFullPath" Type="nvarchar(max)" />
+          <Property Name="Method" Type="nvarchar(max)" />
+          <Property Name="MethodKey" Type="nvarchar(max)" />
+          <Property Name="MethodSignature" Type="nvarchar(max)" />
+          <Property Name="CharStart" Type="int" />
+          <Property Name="CharEnd" Type="int" />
+          <Property Name="LineNumber" Type="int" />
+          <Property Name="LineOfCode" Type="nvarchar(max)" />
+          <Property Name="Created" Type="datetime" Nullable="false" />
+          <Property Name="Session_Id" Type="uniqueidentifier" />
+          <Property Name="CodeFilePath" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="PathNodeParameters">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Type" Type="nvarchar(max)" />
+          <Property Name="Name" Type="nvarchar(max)" />
+          <Property Name="Value" Type="nvarchar(max)" />
+          <Property Name="PathNode_Id" Type="uniqueidentifier" />
+        </EntityType>
+        <EntityType Name="PathNodes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Hash" Type="nvarchar(max)" />
+          <Property Name="Namespace" Type="nvarchar(max)" />
+          <Property Name="Type" Type="nvarchar(max)" />
+          <Property Name="Method" Type="nvarchar(max)" />
+          <Property Name="Parent" Type="nvarchar(max)" />
+          <Property Name="Parent_Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Origin" Type="nvarchar(max)" />
+          <Property Name="ReturnType" Type="nvarchar(max)" />
+          <Property Name="Created" Type="datetime" Nullable="false" />
+          <Property Name="MethodCodeMetric_Id" Type="uniqueidentifier" />
+          <Property Name="Session_Id" Type="uniqueidentifier" />
+          <Property Name="Event_Id" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PharoSessions">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="Started" Type="datetime" Nullable="false" />
+          <Property Name="Finished" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Sessions">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="Started" Type="datetime" Nullable="false" />
+          <Property Name="Finished" Type="datetime" />
+          <Property Name="DeveloperName" Type="nvarchar(max)" />
+          <Property Name="TaskName" Type="nvarchar(max)" />
+          <Property Name="TaskAction" Type="nvarchar(max)" />
+          <Property Name="TaskDescription" Type="nvarchar(max)" />
+          <Property Name="TaskCreated" Type="datetime" />
+          <Property Name="TaskTotalSessionTime" Type="time" Precision="7" Nullable="false" />
+          <Property Name="ProjectName" Type="nvarchar(max)" />
+        </EntityType>
+        <Association Name="FK_dbo_Breakpoints_dbo_Sessions_Session_Id">
+          <End Role="Sessions" Type="Self.Sessions" Multiplicity="0..1" />
+          <End Role="Breakpoints" Type="Self.Breakpoints" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sessions">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Breakpoints">
+              <PropertyRef Name="Session_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_CodeFiles_dbo_Sessions_Session_Id">
+          <End Role="Sessions" Type="Self.Sessions" Multiplicity="0..1" />
+          <End Role="CodeFiles" Type="Self.CodeFiles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sessions">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CodeFiles">
+              <PropertyRef Name="Session_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Events_dbo_Sessions_Session_Id">
+          <End Role="Sessions" Type="Self.Sessions" Multiplicity="0..1" />
+          <End Role="Events" Type="Self.Events" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sessions">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Events">
+              <PropertyRef Name="Session_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_PathNodeParameters_dbo_PathNodes_PathNode_Id">
+          <End Role="PathNodes" Type="Self.PathNodes" Multiplicity="0..1" />
+          <End Role="PathNodeParameters" Type="Self.PathNodeParameters" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PathNodes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PathNodeParameters">
+              <PropertyRef Name="PathNode_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_PathNodes_dbo_CodeMetrics_MethodCodeMetric_Id">
+          <End Role="CodeMetrics" Type="Self.CodeMetrics" Multiplicity="0..1" />
+          <End Role="PathNodes" Type="Self.PathNodes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CodeMetrics">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PathNodes">
+              <PropertyRef Name="MethodCodeMetric_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_PathNodes_dbo_Sessions_Session_Id">
+          <End Role="Sessions" Type="Self.Sessions" Multiplicity="0..1" />
+          <End Role="PathNodes" Type="Self.PathNodes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sessions">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PathNodes">
+              <PropertyRef Name="Session_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SwarmDBModelStoreContainer">
+          <EntitySet Name="Breakpoints" EntityType="Self.Breakpoints" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CodeFiles" EntityType="Self.CodeFiles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CodeMetrics" EntityType="Self.CodeMetrics" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Events" EntityType="Self.Events" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PathNodeParameters" EntityType="Self.PathNodeParameters" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PathNodes" EntityType="Self.PathNodes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PharoSessions" EntityType="Self.PharoSessions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Sessions" EntityType="Self.Sessions" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_dbo_Breakpoints_dbo_Sessions_Session_Id" Association="Self.FK_dbo_Breakpoints_dbo_Sessions_Session_Id">
+            <End Role="Sessions" EntitySet="Sessions" />
+            <End Role="Breakpoints" EntitySet="Breakpoints" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_CodeFiles_dbo_Sessions_Session_Id" Association="Self.FK_dbo_CodeFiles_dbo_Sessions_Session_Id">
+            <End Role="Sessions" EntitySet="Sessions" />
+            <End Role="CodeFiles" EntitySet="CodeFiles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Events_dbo_Sessions_Session_Id" Association="Self.FK_dbo_Events_dbo_Sessions_Session_Id">
+            <End Role="Sessions" EntitySet="Sessions" />
+            <End Role="Events" EntitySet="Events" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_PathNodeParameters_dbo_PathNodes_PathNode_Id" Association="Self.FK_dbo_PathNodeParameters_dbo_PathNodes_PathNode_Id">
+            <End Role="PathNodes" EntitySet="PathNodes" />
+            <End Role="PathNodeParameters" EntitySet="PathNodeParameters" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_PathNodes_dbo_CodeMetrics_MethodCodeMetric_Id" Association="Self.FK_dbo_PathNodes_dbo_CodeMetrics_MethodCodeMetric_Id">
+            <End Role="CodeMetrics" EntitySet="CodeMetrics" />
+            <End Role="PathNodes" EntitySet="PathNodes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_PathNodes_dbo_Sessions_Session_Id" Association="Self.FK_dbo_PathNodes_dbo_Sessions_Session_Id">
+            <End Role="Sessions" EntitySet="Sessions" />
+            <End Role="PathNodes" EntitySet="PathNodes" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SwarmDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Breakpoints">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="BreakpointKind" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Namespace" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Type" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="LineNumber" Type="Int32" />
+          <Property Name="LineOfCode" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Origin" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Created" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Session_Id" Type="Guid" />
+          <Property Name="CodeFilePath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Sessions" Relationship="Self.FK_dbo_Breakpoints_dbo_Sessions_Session_Id" FromRole="Breakpoints" ToRole="Sessions" />
+        </EntityType>
+        <EntityType Name="CodeFiles">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="Path" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Content" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Created" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Session_Id" Type="Guid" />
+          <NavigationProperty Name="Sessions" Relationship="Self.FK_dbo_CodeFiles_dbo_Sessions_Session_Id" FromRole="CodeFiles" ToRole="Sessions" />
+        </EntityType>
+        <EntityType Name="CodeMetrics">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="Hash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="MaintainabilityIndex" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CyclomaticComplexity" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ClassCoupling" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="LineOfCode" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PathNode_Id" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="PathNodes" Relationship="Self.FK_dbo_PathNodes_dbo_CodeMetrics_MethodCodeMetric_Id" FromRole="CodeMetrics" ToRole="PathNodes" />
+        </EntityType>
+        <EntityType Name="Events">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="EventKind" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Detail" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Namespace" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Type" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TypeFullPath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Method" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="MethodKey" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="MethodSignature" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CharStart" Type="Int32" />
+          <Property Name="CharEnd" Type="Int32" />
+          <Property Name="LineNumber" Type="Int32" />
+          <Property Name="LineOfCode" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Created" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Session_Id" Type="Guid" />
+          <Property Name="CodeFilePath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Sessions" Relationship="Self.FK_dbo_Events_dbo_Sessions_Session_Id" FromRole="Events" ToRole="Sessions" />
+        </EntityType>
+        <EntityType Name="PathNodeParameters">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="Type" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Value" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PathNode_Id" Type="Guid" />
+          <NavigationProperty Name="PathNodes" Relationship="Self.FK_dbo_PathNodeParameters_dbo_PathNodes_PathNode_Id" FromRole="PathNodeParameters" ToRole="PathNodes" />
+        </EntityType>
+        <EntityType Name="PathNodes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="Hash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Namespace" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Type" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Method" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Parent" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Parent_Id" Type="Guid" Nullable="false" />
+          <Property Name="Origin" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ReturnType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Created" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="MethodCodeMetric_Id" Type="Guid" />
+          <Property Name="Session_Id" Type="Guid" />
+          <Property Name="Event_Id" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="CodeMetrics" Relationship="Self.FK_dbo_PathNodes_dbo_CodeMetrics_MethodCodeMetric_Id" FromRole="PathNodes" ToRole="CodeMetrics" />
+          <NavigationProperty Name="PathNodeParameters" Relationship="Self.FK_dbo_PathNodeParameters_dbo_PathNodes_PathNode_Id" FromRole="PathNodes" ToRole="PathNodeParameters" />
+          <NavigationProperty Name="Sessions" Relationship="Self.FK_dbo_PathNodes_dbo_Sessions_Session_Id" FromRole="PathNodes" ToRole="Sessions" />
+        </EntityType>
+        <EntityType Name="PharoSessions">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Started" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Finished" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="Sessions">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Started" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Finished" Type="DateTime" Precision="3" />
+          <Property Name="DeveloperName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TaskName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TaskAction" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TaskDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TaskCreated" Type="DateTime" Precision="3" />
+          <Property Name="TaskTotalSessionTime" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="ProjectName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Breakpoints" Relationship="Self.FK_dbo_Breakpoints_dbo_Sessions_Session_Id" FromRole="Sessions" ToRole="Breakpoints" />
+          <NavigationProperty Name="CodeFiles" Relationship="Self.FK_dbo_CodeFiles_dbo_Sessions_Session_Id" FromRole="Sessions" ToRole="CodeFiles" />
+          <NavigationProperty Name="Events" Relationship="Self.FK_dbo_Events_dbo_Sessions_Session_Id" FromRole="Sessions" ToRole="Events" />
+          <NavigationProperty Name="PathNodes" Relationship="Self.FK_dbo_PathNodes_dbo_Sessions_Session_Id" FromRole="Sessions" ToRole="PathNodes" />
+        </EntityType>
+        <Association Name="FK_dbo_Breakpoints_dbo_Sessions_Session_Id">
+          <End Role="Sessions" Type="Self.Sessions" Multiplicity="0..1" />
+          <End Role="Breakpoints" Type="Self.Breakpoints" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sessions">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Breakpoints">
+              <PropertyRef Name="Session_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_CodeFiles_dbo_Sessions_Session_Id">
+          <End Role="Sessions" Type="Self.Sessions" Multiplicity="0..1" />
+          <End Role="CodeFiles" Type="Self.CodeFiles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sessions">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CodeFiles">
+              <PropertyRef Name="Session_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_PathNodes_dbo_CodeMetrics_MethodCodeMetric_Id">
+          <End Role="CodeMetrics" Type="Self.CodeMetrics" Multiplicity="0..1" />
+          <End Role="PathNodes" Type="Self.PathNodes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CodeMetrics">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PathNodes">
+              <PropertyRef Name="MethodCodeMetric_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Events_dbo_Sessions_Session_Id">
+          <End Role="Sessions" Type="Self.Sessions" Multiplicity="0..1" />
+          <End Role="Events" Type="Self.Events" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sessions">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Events">
+              <PropertyRef Name="Session_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_PathNodeParameters_dbo_PathNodes_PathNode_Id">
+          <End Role="PathNodes" Type="Self.PathNodes" Multiplicity="0..1" />
+          <End Role="PathNodeParameters" Type="Self.PathNodeParameters" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PathNodes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PathNodeParameters">
+              <PropertyRef Name="PathNode_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_PathNodes_dbo_Sessions_Session_Id">
+          <End Role="Sessions" Type="Self.Sessions" Multiplicity="0..1" />
+          <End Role="PathNodes" Type="Self.PathNodes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sessions">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PathNodes">
+              <PropertyRef Name="Session_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Breakpoints" EntityType="Self.Breakpoints" />
+          <EntitySet Name="CodeFiles" EntityType="Self.CodeFiles" />
+          <EntitySet Name="CodeMetrics" EntityType="Self.CodeMetrics" />
+          <EntitySet Name="Events" EntityType="Self.Events" />
+          <EntitySet Name="PathNodeParameters" EntityType="Self.PathNodeParameters" />
+          <EntitySet Name="PathNodes" EntityType="Self.PathNodes" />
+          <EntitySet Name="PharoSessions" EntityType="Self.PharoSessions" />
+          <EntitySet Name="Sessions" EntityType="Self.Sessions" />
+          <AssociationSet Name="FK_dbo_Breakpoints_dbo_Sessions_Session_Id" Association="Self.FK_dbo_Breakpoints_dbo_Sessions_Session_Id">
+            <End Role="Sessions" EntitySet="Sessions" />
+            <End Role="Breakpoints" EntitySet="Breakpoints" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_CodeFiles_dbo_Sessions_Session_Id" Association="Self.FK_dbo_CodeFiles_dbo_Sessions_Session_Id">
+            <End Role="Sessions" EntitySet="Sessions" />
+            <End Role="CodeFiles" EntitySet="CodeFiles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_PathNodes_dbo_CodeMetrics_MethodCodeMetric_Id" Association="Self.FK_dbo_PathNodes_dbo_CodeMetrics_MethodCodeMetric_Id">
+            <End Role="CodeMetrics" EntitySet="CodeMetrics" />
+            <End Role="PathNodes" EntitySet="PathNodes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Events_dbo_Sessions_Session_Id" Association="Self.FK_dbo_Events_dbo_Sessions_Session_Id">
+            <End Role="Sessions" EntitySet="Sessions" />
+            <End Role="Events" EntitySet="Events" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_PathNodeParameters_dbo_PathNodes_PathNode_Id" Association="Self.FK_dbo_PathNodeParameters_dbo_PathNodes_PathNode_Id">
+            <End Role="PathNodes" EntitySet="PathNodes" />
+            <End Role="PathNodeParameters" EntitySet="PathNodeParameters" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_PathNodes_dbo_Sessions_Session_Id" Association="Self.FK_dbo_PathNodes_dbo_Sessions_Session_Id">
+            <End Role="Sessions" EntitySet="Sessions" />
+            <End Role="PathNodes" EntitySet="PathNodes" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SwarmDBModelStoreContainer" CdmEntityContainer="Entities">
+          <EntitySetMapping Name="Breakpoints">
+            <EntityTypeMapping TypeName="SwarmDBModel.Breakpoints">
+              <MappingFragment StoreEntitySet="Breakpoints">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="BreakpointKind" ColumnName="BreakpointKind" />
+                <ScalarProperty Name="Namespace" ColumnName="Namespace" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="LineNumber" ColumnName="LineNumber" />
+                <ScalarProperty Name="LineOfCode" ColumnName="LineOfCode" />
+                <ScalarProperty Name="Origin" ColumnName="Origin" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="Session_Id" ColumnName="Session_Id" />
+                <ScalarProperty Name="CodeFilePath" ColumnName="CodeFilePath" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CodeFiles">
+            <EntityTypeMapping TypeName="SwarmDBModel.CodeFiles">
+              <MappingFragment StoreEntitySet="CodeFiles">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Path" ColumnName="Path" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="Session_Id" ColumnName="Session_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CodeMetrics">
+            <EntityTypeMapping TypeName="SwarmDBModel.CodeMetrics">
+              <MappingFragment StoreEntitySet="CodeMetrics">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Hash" ColumnName="Hash" />
+                <ScalarProperty Name="MaintainabilityIndex" ColumnName="MaintainabilityIndex" />
+                <ScalarProperty Name="CyclomaticComplexity" ColumnName="CyclomaticComplexity" />
+                <ScalarProperty Name="ClassCoupling" ColumnName="ClassCoupling" />
+                <ScalarProperty Name="LineOfCode" ColumnName="LineOfCode" />
+                <ScalarProperty Name="PathNode_Id" ColumnName="PathNode_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Events">
+            <EntityTypeMapping TypeName="SwarmDBModel.Events">
+              <MappingFragment StoreEntitySet="Events">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="EventKind" ColumnName="EventKind" />
+                <ScalarProperty Name="Detail" ColumnName="Detail" />
+                <ScalarProperty Name="Namespace" ColumnName="Namespace" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="TypeFullPath" ColumnName="TypeFullPath" />
+                <ScalarProperty Name="Method" ColumnName="Method" />
+                <ScalarProperty Name="MethodKey" ColumnName="MethodKey" />
+                <ScalarProperty Name="MethodSignature" ColumnName="MethodSignature" />
+                <ScalarProperty Name="CharStart" ColumnName="CharStart" />
+                <ScalarProperty Name="CharEnd" ColumnName="CharEnd" />
+                <ScalarProperty Name="LineNumber" ColumnName="LineNumber" />
+                <ScalarProperty Name="LineOfCode" ColumnName="LineOfCode" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="Session_Id" ColumnName="Session_Id" />
+                <ScalarProperty Name="CodeFilePath" ColumnName="CodeFilePath" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PathNodeParameters">
+            <EntityTypeMapping TypeName="SwarmDBModel.PathNodeParameters">
+              <MappingFragment StoreEntitySet="PathNodeParameters">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="PathNode_Id" ColumnName="PathNode_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PathNodes">
+            <EntityTypeMapping TypeName="SwarmDBModel.PathNodes">
+              <MappingFragment StoreEntitySet="PathNodes">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Hash" ColumnName="Hash" />
+                <ScalarProperty Name="Namespace" ColumnName="Namespace" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Method" ColumnName="Method" />
+                <ScalarProperty Name="Parent" ColumnName="Parent" />
+                <ScalarProperty Name="Parent_Id" ColumnName="Parent_Id" />
+                <ScalarProperty Name="Origin" ColumnName="Origin" />
+                <ScalarProperty Name="ReturnType" ColumnName="ReturnType" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="MethodCodeMetric_Id" ColumnName="MethodCodeMetric_Id" />
+                <ScalarProperty Name="Session_Id" ColumnName="Session_Id" />
+                <ScalarProperty Name="Event_Id" ColumnName="Event_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PharoSessions">
+            <EntityTypeMapping TypeName="SwarmDBModel.PharoSessions">
+              <MappingFragment StoreEntitySet="PharoSessions">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Started" ColumnName="Started" />
+                <ScalarProperty Name="Finished" ColumnName="Finished" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Sessions">
+            <EntityTypeMapping TypeName="SwarmDBModel.Sessions">
+              <MappingFragment StoreEntitySet="Sessions">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Started" ColumnName="Started" />
+                <ScalarProperty Name="Finished" ColumnName="Finished" />
+                <ScalarProperty Name="DeveloperName" ColumnName="DeveloperName" />
+                <ScalarProperty Name="TaskName" ColumnName="TaskName" />
+                <ScalarProperty Name="TaskAction" ColumnName="TaskAction" />
+                <ScalarProperty Name="TaskDescription" ColumnName="TaskDescription" />
+                <ScalarProperty Name="TaskCreated" ColumnName="TaskCreated" />
+                <ScalarProperty Name="TaskTotalSessionTime" ColumnName="TaskTotalSessionTime" />
+                <ScalarProperty Name="ProjectName" ColumnName="ProjectName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

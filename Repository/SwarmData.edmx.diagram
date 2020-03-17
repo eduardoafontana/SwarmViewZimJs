@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="f346fa9d109241cabdd5ee47b4473d9d" Name="Diagram1">
+        <EntityTypeShape EntityType="SwarmDBModel.Breakpoints" Width="1.5" PointX="3" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SwarmDBModel.CodeFiles" Width="1.5" PointX="3" PointY="8.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SwarmDBModel.CodeMetrics" Width="1.5" PointX="3.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SwarmDBModel.Events" Width="1.5" PointX="3" PointY="11.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SwarmDBModel.PathNodeParameters" Width="1.5" PointX="8.25" PointY="9" IsExpanded="true" />
+        <EntityTypeShape EntityType="SwarmDBModel.PathNodes" Width="1.5" PointX="6" PointY="8" IsExpanded="true" />
+        <EntityTypeShape EntityType="SwarmDBModel.PharoSessions" Width="1.5" PointX="0.75" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SwarmDBModel.Sessions" Width="1.5" PointX="0.75" PointY="8.125" IsExpanded="true" />
+        <AssociationConnector Association="SwarmDBModel.FK_dbo_Breakpoints_dbo_Sessions_Session_Id" ManuallyRouted="false" />
+        <AssociationConnector Association="SwarmDBModel.FK_dbo_CodeFiles_dbo_Sessions_Session_Id" ManuallyRouted="false" />
+        <AssociationConnector Association="SwarmDBModel.FK_dbo_PathNodes_dbo_CodeMetrics_MethodCodeMetric_Id" ManuallyRouted="false" />
+        <AssociationConnector Association="SwarmDBModel.FK_dbo_Events_dbo_Sessions_Session_Id" ManuallyRouted="false" />
+        <AssociationConnector Association="SwarmDBModel.FK_dbo_PathNodeParameters_dbo_PathNodes_PathNode_Id" ManuallyRouted="false" />
+        <AssociationConnector Association="SwarmDBModel.FK_dbo_PathNodes_dbo_Sessions_Session_Id" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

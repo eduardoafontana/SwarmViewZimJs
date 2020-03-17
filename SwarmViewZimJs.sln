@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.16
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SwarmViewZimJs", "SwarmViewZimJs\SwarmViewZimJs.csproj", "{84B23079-EC1C-495D-980E-ACFFF73FAFAA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SwarmViewZimJs.Tests", "SwarmViewZimJs.Tests\SwarmViewZimJs.Tests.csproj", "{C21C29E1-ED6B-43FA-95F7-1896D111FD90}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{84B23079-EC1C-495D-980E-ACFFF73FAFAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84B23079-EC1C-495D-980E-ACFFF73FAFAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84B23079-EC1C-495D-980E-ACFFF73FAFAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84B23079-EC1C-495D-980E-ACFFF73FAFAA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C21C29E1-ED6B-43FA-95F7-1896D111FD90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C21C29E1-ED6B-43FA-95F7-1896D111FD90}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C21C29E1-ED6B-43FA-95F7-1896D111FD90}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C21C29E1-ED6B-43FA-95F7-1896D111FD90}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0BF45671-CB9D-44C2-9C9F-55051791E017}
+	EndGlobalSection
+EndGlobal
